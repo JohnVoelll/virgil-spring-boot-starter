@@ -28,17 +28,20 @@ public class MessageController {
     public boolean create(
         @RequestBody final GenerateMessagePayload payload
     ) throws JsonProcessingException {
-        if(payload.getSendToDlq()) {
-            for (int i = 0; i < payload.getNum(); i++) {
-                messagePublisher.sendMessageToDlq(generateMessage());
+        return switch(payload.getSendToDlq()) {
+            case true -> {
+                for (int i = 0; i < payload.getNum(); i++) {
+                    messagePublisher.sendMessageToDlq(generateMessage());
+                }
+                yield true;
             }
-        } else {
-            for (int i = 0; i < payload.getNum(); i++) {
-                messagePublisher.sendMessageToQueue(generateMessage());
+            case false -> {
+                for (int i = 0; i < payload.getNum(); i++) {
+                    messagePublisher.sendMessageToQueue(generateMessage());
+                }
+                yield true;
             }
-        }
-
-        return true;
+        };
     }
 
     private CustomMessage generateMessage() {

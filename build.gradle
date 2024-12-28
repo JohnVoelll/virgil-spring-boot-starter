@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'org.springframework.boot' version '3.0.0'
 }
 
 repositories {
@@ -8,35 +9,40 @@ repositories {
 }
 
 dependencies {
-
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
     // Spring Boot
-    compile "org.springframework.boot:spring-boot-actuator:2.2.4.RELEASE"
-    compile "org.springframework.boot:spring-boot-starter-amqp:2.3.0.RELEASE"
-    annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor:2.2.4.RELEASE"
+    implementation "org.springframework.boot:spring-boot-actuator:3.0.0"
+    implementation "org.springframework.boot:spring-boot-starter-amqp:3.0.0"
+    annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor:3.0.0"
 
     // Jackson libraries
-    compile "com.fasterxml.jackson.core:jackson-databind:2.10.2"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.14.0"
 
     // Spring Boot Admin
-    compile 'de.codecentric:spring-boot-admin-starter-server:2.2.0'
-    compile 'de.codecentric:spring-boot-admin-starter-client:2.2.0'
+    implementation 'de.codecentric:spring-boot-admin-starter-server:3.0.0'
+    implementation 'de.codecentric:spring-boot-admin-starter-client:3.0.0'
 
-    compile 'io.projectreactor.netty:reactor-netty:0.9.0.RELEASE'
+    implementation 'io.projectreactor.netty:reactor-netty:1.0.0'
 
     compileOnly 'org.immutables:value:2.8.3'
     annotationProcessor 'org.immutables:value:2.8.3'
 
     // Test Only
-    testCompile 'org.mockito:mockito-core:2.24.0'
-    testCompile 'org.mockito:mockito-junit-jupiter:2.24.0'
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.4.0'
-    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
-    testCompile 'org.assertj:assertj-core:3.15.0'
-    testCompile 'org.springframework:spring-test:5.2.4.RELEASE'
-    testCompile 'org.springframework:spring-context:5.2.4.RELEASE'
-    testCompile 'org.springframework.boot:spring-boot-starter-test:2.2.4.RELEASE'
+    testImplementation 'org.mockito:mockito-core:4.8.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.8.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    testImplementation 'org.assertj:assertj-core:3.23.0'
+    testImplementation 'org.springframework:spring-test:6.0.0'
+    testImplementation 'org.springframework:spring-context:6.0.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
+}
+
+springBoot {
+    buildInfo {
+        excludes = ['time']
+    }
 }
 
 test {
@@ -49,6 +55,22 @@ compileJava {
     // adds metadata at compile to allow for better reflection for spring boot admin
     // specifically allows actuator @Selector attributes to pick up the name of the parameter
     options.compilerArgs << '-parameters'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+//    toolchain {
+//        languageVersion = JavaLanguageVersion.of(17)
+//    }
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
 }
 
 publishing {
@@ -100,7 +122,6 @@ task virgilCopyToResources(type: Copy) {
     into './src/main/resources/META-INF/extensions/custom'
 }
 
-
 task buildFrontEndProd(type: GradleBuild) {
     group = 'build'
     description = 'Build frontend for Prod'
@@ -114,3 +135,4 @@ task buildFrontEndDev(type: GradleBuild) {
 
     dependsOn ordered(":virgilNpmInstall", ":virgilTest", ":virgilNpmBuildDev", ":virgilCleanTarget", ":virgilCopyToResources")
 }
+

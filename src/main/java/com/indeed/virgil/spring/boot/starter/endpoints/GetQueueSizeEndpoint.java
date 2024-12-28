@@ -5,7 +5,6 @@ import com.indeed.virgil.spring.boot.starter.models.ImmutableEndpointResponse;
 import com.indeed.virgil.spring.boot.starter.services.MessageOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Selector;
@@ -18,13 +17,12 @@ import static com.indeed.virgil.spring.boot.starter.util.EndpointConstants.GET_Q
 
 @Component
 @Endpoint(id = GET_QUEUE_SIZE_ENDPOINT_ID)
-public class GetQueueSizeEndpoint implements IVirgilEndpoint {
+public final class GetQueueSizeEndpoint implements IVirgilEndpoint {
 
     private static final Logger LOG = LoggerFactory.getLogger(GetQueueSizeEndpoint.class);
 
     private final MessageOperator messageOperator;
 
-    @Autowired
     public GetQueueSizeEndpoint(final MessageOperator messageOperator) {
         this.messageOperator = messageOperator;
     }

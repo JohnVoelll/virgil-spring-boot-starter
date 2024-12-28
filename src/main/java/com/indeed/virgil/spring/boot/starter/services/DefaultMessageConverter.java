@@ -59,10 +59,10 @@ public class DefaultMessageConverter implements IMessageConverter {
         //set the id with a value that is not dependent on the server, this will allow us to reference the same message
         // in the queue without the message cache
         final String potentialMessageId = msg.getMessageProperties().getMessageId();
-        if (!StringUtils.isEmpty(potentialMessageId)) {
-            virgilMessageBuilder.setId(String.format("i_%s", potentialMessageId));
-        } else {
+        if (!StringUtils.hasLength(potentialMessageId)) {
             virgilMessageBuilder.setId(String.format("f_%s", fingerprint));
+        } else {
+            virgilMessageBuilder.setId(String.format("i_%s", potentialMessageId));
         }
         return virgilMessageBuilder.build();
     }

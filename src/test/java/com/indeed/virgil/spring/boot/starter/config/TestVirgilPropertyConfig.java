@@ -2,7 +2,6 @@ package com.indeed.virgil.spring.boot.starter.config;
 
 import com.indeed.virgil.spring.boot.starter.config.VirgilPropertyConfig.BinderProperties;
 import com.indeed.virgil.spring.boot.starter.config.VirgilPropertyConfig.QueueProperties;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +15,12 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringJUnitConfig
-public class TestVirgilPropertyConfig {
-
+class TestVirgilPropertyConfig {
 
     @Nested
     @EnableConfigurationProperties(VirgilPropertyConfig.class)
     @TestPropertySource(locations = "classpath:single-queue-config.properties")
-    public class SingleQueueConfiguration {
+    class SingleQueueConfiguration {
 
         @Autowired
         VirgilPropertyConfig virgilPropertyConfig;
@@ -35,7 +33,7 @@ public class TestVirgilPropertyConfig {
             final Map<String, QueueProperties> queueMap = virgilPropertyConfig.getQueues();
 
             //Assert
-            assertThat(queueMap.size()).isEqualTo(1);
+            assertThat(queueMap).hasSize(1);
         }
 
         @Test
@@ -94,7 +92,7 @@ public class TestVirgilPropertyConfig {
             final Map<String, BinderProperties> binderMap = virgilPropertyConfig.getBinders();
 
             //Assert
-            assertThat(binderMap.size()).isEqualTo(1);
+            assertThat(binderMap).hasSize(1);
         }
 
         @Test
@@ -130,7 +128,7 @@ public class TestVirgilPropertyConfig {
 
             //Assert
             final BinderProperties binderEntry = binderMap.entrySet().iterator().next().getValue();
-            assertThat(binderEntry.getRabbitProperties().getAddresses()).isEqualTo("localhost:11111");
+            assertThat(binderEntry.getRabbitProperties().determineAddresses()).isEqualTo("localhost:11111");
         }
 
         @Test
@@ -142,7 +140,7 @@ public class TestVirgilPropertyConfig {
 
             //Assert
             final BinderProperties binderEntry = binderMap.entrySet().iterator().next().getValue();
-            assertThat(binderEntry.getRabbitProperties().getHost()).isEqualTo("localhost");
+            assertThat(binderEntry.getRabbitProperties().determineHost()).isEqualTo("localhost");
         }
 
         @Test
@@ -166,7 +164,7 @@ public class TestVirgilPropertyConfig {
 
             //Assert
             final BinderProperties binderEntry = binderMap.entrySet().iterator().next().getValue();
-            assertThat(binderEntry.getRabbitProperties().getUsername()).isEqualTo("guest");
+            assertThat(binderEntry.getRabbitProperties().determineUsername()).isEqualTo("guest");
         }
 
         @Test
@@ -178,7 +176,7 @@ public class TestVirgilPropertyConfig {
 
             //Assert
             final BinderProperties binderEntry = binderMap.entrySet().iterator().next().getValue();
-            assertThat(binderEntry.getRabbitProperties().getPassword()).isEqualTo("guestPass");
+            assertThat(binderEntry.getRabbitProperties().determinePassword()).isEqualTo("guestPass");
         }
 
         @Test
@@ -190,12 +188,11 @@ public class TestVirgilPropertyConfig {
 
             //Assert
             final BinderProperties binderEntry = binderMap.entrySet().iterator().next().getValue();
-            assertThat(binderEntry.getRabbitProperties().getVirtualHost()).isEqualTo("/");
+            assertThat(binderEntry.getRabbitProperties().determineVirtualHost()).isEqualTo("/");
         }
 
         @Test
         void shouldReturnListOfQueues() {
-
             //Act
             final List<String> result = virgilPropertyConfig.getQueueNames();
 
@@ -207,7 +204,7 @@ public class TestVirgilPropertyConfig {
     @Nested
     @EnableConfigurationProperties(VirgilPropertyConfig.class)
     @TestPropertySource(locations = "classpath:single-queue-with-port-config.properties")
-    public class SingleQueueWithPortConfiguration {
+    class SingleQueueWithPortConfiguration {
 
         @Autowired
         VirgilPropertyConfig virgilPropertyConfig;
@@ -220,7 +217,7 @@ public class TestVirgilPropertyConfig {
             final Map<String, QueueProperties> queueMap = virgilPropertyConfig.getQueues();
 
             //Assert
-            assertThat(queueMap.size()).isEqualTo(1);
+            assertThat(queueMap).hasSize(1);
         }
 
         @Test
@@ -321,7 +318,6 @@ public class TestVirgilPropertyConfig {
 
         @Test
         void shouldReturnListOfQueues() {
-
             //Act
             final List<String> result = virgilPropertyConfig.getQueueNames();
 
@@ -333,7 +329,7 @@ public class TestVirgilPropertyConfig {
     @Nested
     @EnableConfigurationProperties(VirgilPropertyConfig.class)
     @TestPropertySource(locations = "classpath:single-queue-without-port-config.properties")
-    public class SingleQueueWithoutPortConfiguration {
+    class SingleQueueWithoutPortConfiguration {
 
         @Autowired
         VirgilPropertyConfig virgilPropertyConfig;
@@ -346,7 +342,7 @@ public class TestVirgilPropertyConfig {
             final Map<String, QueueProperties> queueMap = virgilPropertyConfig.getQueues();
 
             //Assert
-            assertThat(queueMap.size()).isEqualTo(1);
+            assertThat(queueMap).hasSize(1);
         }
 
         @Test
@@ -447,7 +443,6 @@ public class TestVirgilPropertyConfig {
 
         @Test
         void shouldReturnListOfQueues() {
-
             //Act
             final List<String> result = virgilPropertyConfig.getQueueNames();
 
@@ -459,7 +454,7 @@ public class TestVirgilPropertyConfig {
     @Nested
     @EnableConfigurationProperties(VirgilPropertyConfig.class)
     @TestPropertySource(locations = "classpath:multi-queue-config.properties")
-    public class MultiQueueConfiguration {
+    class MultiQueueConfiguration {
 
         @Autowired
         VirgilPropertyConfig virgilPropertyConfig;
@@ -472,7 +467,7 @@ public class TestVirgilPropertyConfig {
             final Map<String, QueueProperties> queueMap = virgilPropertyConfig.getQueues();
 
             //Assert
-            assertThat(queueMap.size()).isEqualTo(2);
+            assertThat(queueMap).hasSize(2);
         }
 
         @Test
@@ -573,7 +568,6 @@ public class TestVirgilPropertyConfig {
 
         @Test
         void shouldReturnListOfQueues() {
-
             //Act
             final List<String> result = virgilPropertyConfig.getQueueNames();
 

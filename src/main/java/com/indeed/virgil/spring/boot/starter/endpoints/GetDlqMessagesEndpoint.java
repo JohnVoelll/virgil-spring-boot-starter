@@ -6,12 +6,10 @@ import com.indeed.virgil.spring.boot.starter.models.VirgilMessage;
 import com.indeed.virgil.spring.boot.starter.services.MessageOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
-import org.springframework.boot.actuate.endpoint.annotation.Selector;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,12 +19,11 @@ import static com.indeed.virgil.spring.boot.starter.util.EndpointConstants.GET_D
 
 @Component
 @Endpoint(id = GET_DLQ_MESSAGES_ENDPOINT_ID)
-public class GetDlqMessagesEndpoint implements IVirgilEndpoint {
+public final class GetDlqMessagesEndpoint implements IVirgilEndpoint {
     private static final Logger LOG = LoggerFactory.getLogger(GetDlqMessagesEndpoint.class);
 
     private final MessageOperator messageOperator;
 
-    @Autowired
     public GetDlqMessagesEndpoint(
         final MessageOperator messageOperator
     ) {

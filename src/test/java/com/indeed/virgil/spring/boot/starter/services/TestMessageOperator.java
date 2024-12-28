@@ -53,7 +53,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class TestMessageOperator {
+class TestMessageOperator {
 
     private static final String EXCHANGE_NAME = "exchange";
     private static final String QUEUE_ID = "primaryQueue";
@@ -98,8 +98,8 @@ public class TestMessageOperator {
     );
 
     @BeforeEach
-    public void initializeSetup() {
-        MockitoAnnotations.initMocks(this);
+    void initializeSetup() {
+        MockitoAnnotations.openMocks(this);
 
         messageOperator = new MessageOperator(virgilPropertyConfig, rabbitMqConnectionService, messageConverterService);
     }
@@ -614,6 +614,7 @@ public class TestMessageOperator {
 
             final GetResponse mockGetResponse = mock(GetResponse.class);
             when(mockGetResponse.getProps()).thenReturn(new BasicProperties());
+            when(mockGetResponse.getBody()).thenReturn("".getBytes());
             when(mockGetResponse.getEnvelope()).thenReturn(new Envelope(deliveryTag, redeliver, EXCHANGE_NAME, BINDING_KEY));
 
 
@@ -653,6 +654,7 @@ public class TestMessageOperator {
 
             final GetResponse mockGetResponse = mock(GetResponse.class);
             when(mockGetResponse.getProps()).thenReturn(new BasicProperties());
+            when(mockGetResponse.getBody()).thenReturn("".getBytes());
             when(mockGetResponse.getEnvelope()).thenReturn(new Envelope(deliveryTag, redeliver, EXCHANGE_NAME, BINDING_KEY));
 
 
@@ -691,6 +693,7 @@ public class TestMessageOperator {
 
             final GetResponse mockGetResponse = mock(GetResponse.class);
             when(mockGetResponse.getProps()).thenReturn(new BasicProperties());
+            when(mockGetResponse.getBody()).thenReturn("".getBytes());
             when(mockGetResponse.getEnvelope()).thenReturn(new Envelope(deliveryTag, redeliver, EXCHANGE_NAME, BINDING_KEY));
 
 
@@ -813,6 +816,7 @@ public class TestMessageOperator {
 
             final GetResponse mockGetResponse = mock(GetResponse.class);
             when(mockGetResponse.getProps()).thenReturn(new BasicProperties());
+            when(mockGetResponse.getBody()).thenReturn("".getBytes());
             when(mockGetResponse.getEnvelope()).thenReturn(new Envelope(deliveryTag, redeliver, EXCHANGE_NAME, BINDING_KEY));
 
 
@@ -953,6 +957,7 @@ public class TestMessageOperator {
 
             final GetResponse mockGetResponse = mock(GetResponse.class);
             when(mockGetResponse.getProps()).thenReturn(new BasicProperties());
+            when(mockGetResponse.getBody()).thenReturn("".getBytes());
             when(mockGetResponse.getEnvelope()).thenReturn(new Envelope(deliveryTag, redeliver, EXCHANGE_NAME, BINDING_KEY));
 
 
@@ -999,7 +1004,7 @@ public class TestMessageOperator {
 
             final Channel mockChannel = mock(Channel.class);
             when(mockChannel.basicGet(QUEUE_NAME, false)).thenReturn(mockGetResponse);
-
+            when(mockGetResponse.getBody()).thenReturn("".getBytes());
             doNothing().when(rabbitTemplate).convertAndSend(anyString(), anyString(), (Object) any());
 
             //Act
@@ -1035,6 +1040,7 @@ public class TestMessageOperator {
 
             final GetResponse mockGetResponse = mock(GetResponse.class);
             when(mockGetResponse.getProps()).thenReturn(new BasicProperties());
+            when(mockGetResponse.getBody()).thenReturn("".getBytes());
             when(mockGetResponse.getEnvelope()).thenReturn(new Envelope(deliveryTag, redeliver, EXCHANGE_NAME, BINDING_KEY));
 
 
@@ -1075,6 +1081,7 @@ public class TestMessageOperator {
 
             final GetResponse mockGetResponse = mock(GetResponse.class);
             when(mockGetResponse.getProps()).thenReturn(new BasicProperties());
+            when(mockGetResponse.getBody()).thenReturn("".getBytes());
             when(mockGetResponse.getEnvelope()).thenReturn(new Envelope(deliveryTag, redeliver, EXCHANGE_NAME, BINDING_KEY));
 
 

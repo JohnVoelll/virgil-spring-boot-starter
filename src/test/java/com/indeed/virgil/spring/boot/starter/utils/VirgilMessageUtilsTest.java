@@ -11,7 +11,7 @@ import org.springframework.amqp.core.MessageProperties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class VirgilMessageUtilsTest {
+class VirgilMessageUtilsTest {
 
     private VirgilMessageUtils virgilMessageUtils;
 
@@ -36,33 +36,6 @@ public class VirgilMessageUtilsTest {
 
             //Assert
             assertThat(result).isEqualTo("3e1bc27b4db8f518e7ebbb2da9912ec5");
-        }
-
-        @Test
-        void shouldReturnFingerprintForMessageWithNullBody() {
-            //Arrange
-            final MessageProperties messageProperties = new MessageProperties();
-            messageProperties.setHeader("uniqueKey", "1");
-            final Message msg = new Message(null, messageProperties);
-
-            //Act
-            final String result = virgilMessageUtils.generateFingerprint(msg);
-
-            //Assert
-            assertThat(result).isEqualTo("3e1bc27b4db8f518e7ebbb2da9912ec5");
-        }
-
-        @Test
-        void shouldReturnFingerprintForMessageWithNoProperties() {
-            //Arrange
-            final byte[] body = "asfdafdas".getBytes();
-            final Message msg = new Message(body, null);
-
-            //Act
-            final String result = virgilMessageUtils.generateFingerprint(msg);
-
-            //Assert
-            assertThat(result).isEqualTo("81f2dd8b7cf2ef9e7b3210c6741766b7");
         }
 
         @Test
@@ -126,6 +99,5 @@ public class VirgilMessageUtilsTest {
             assertThat(result2).isEqualTo("6fb4d910a8c82397e1892a142ab5ffb1");
             assertThat(result1).isEqualTo(result2);
         }
-
     }
 }

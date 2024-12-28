@@ -1,10 +1,8 @@
 package com.indeed.virgil.spring.boot.starter.endpoints;
 
-import com.indeed.virgil.spring.boot.starter.models.AckCertainMessageResponse;
 import com.indeed.virgil.spring.boot.starter.models.ImmutableAckCertainMessageResponse;
 import com.indeed.virgil.spring.boot.starter.services.MessageOperator;
 import com.indeed.virgil.spring.boot.starter.util.EndpointConstants;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -35,12 +33,11 @@ public class TestDropMessageEndpoint {
 
     @Test
     void shouldImplementIVirgilEndpoint() {
-
         //Act
         final Class<?> c = DropMessageEndpoint.class;
 
         //Assert
-        Assertions.assertTrue(IVirgilEndpoint.class.isAssignableFrom(c));
+        assertThat(IVirgilEndpoint.class.isAssignableFrom(c)).isTrue();
     }
 
     @Nested

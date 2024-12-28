@@ -1,15 +1,7 @@
 package com.indeed.virgil.example.models;
 
-public class GenerateMessagePayload {
-    private final long num;
-    private final boolean sendToDlq;
-
-    public GenerateMessagePayload(
-        final long num,
-        final boolean sendToDlq
-    ) {
-        this.num = num;
-        this.sendToDlq = sendToDlq;
+public record GenerateMessagePayload(long num, boolean sendToDlq) {
+    public GenerateMessagePayload {
     }
 
     public long getNum() {

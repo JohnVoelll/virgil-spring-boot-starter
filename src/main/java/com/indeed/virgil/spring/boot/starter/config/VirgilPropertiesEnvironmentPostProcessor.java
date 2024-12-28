@@ -29,7 +29,7 @@ import static com.indeed.virgil.spring.boot.starter.util.EndpointConstants.VIRGI
  * enter all the stuff we did here to make it work.
  */
 @Order(Ordered.HIGHEST_PRECEDENCE + 100)
-class VirgilPropertiesEnvironmentPostProcessor implements EnvironmentPostProcessor {
+public class VirgilPropertiesEnvironmentPostProcessor implements EnvironmentPostProcessor {
 
     private static final String PROPERTY_SOURCE_NAME = "virgil";
     private static final String ENDPOINTS_PATH_MAPPING_PROPERTY = "management.endpoints.web.path-mapping.%s";
@@ -53,12 +53,10 @@ class VirgilPropertiesEnvironmentPostProcessor implements EnvironmentPostProcess
 
     @Override
     public void postProcessEnvironment(final ConfigurableEnvironment environment, final SpringApplication application) {
-
         // Configure in the default endpoint properties (path and ttl)
         final Set<String> exposedEndpoints = new HashSet<>();
         final Set<String> probedEndpoints = new HashSet<>();
         final Map<String, Object> properties = new HashMap<>();
-
 
         for (final String[] endpointConfig : DEFAULT_ENDPOINTS) {
             final String endpointId = endpointConfig[0];
@@ -72,7 +70,7 @@ class VirgilPropertiesEnvironmentPostProcessor implements EnvironmentPostProcess
             final Optional<String> mappingOverride = getProperty(endpointPathMappingProperty, environment);
 
             //Users can manually override an existing mapping, and we shouldn't change it
-            if (!mappingOverride.isPresent()) {
+            if (mappingOverride.isEmpty()) {
                 properties.put(endpointPathMappingProperty, endpointPath);
             }
         }

@@ -34,7 +34,6 @@ dependencies {
 	implementation 'de.codecentric:spring-boot-admin-starter-server'
 	//implementation 'org.springframework.boot:spring-boot-starter-security'
 
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.amqp:spring-rabbit-test'

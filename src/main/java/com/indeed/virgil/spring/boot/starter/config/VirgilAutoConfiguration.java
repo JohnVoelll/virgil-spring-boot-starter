@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 /**
  * Loads Configuration for Virgil.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @Import({
     VirgilEndpointsConfiguration.class,
     VirgilConfig.class

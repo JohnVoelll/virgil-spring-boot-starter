@@ -2,8 +2,7 @@ package com.indeed.virgil.spring.boot.starter.models;
 
 import org.immutables.value.Value;
 import org.springframework.amqp.core.Message;
-
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 
 @Value.Immutable

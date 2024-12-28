@@ -5,7 +5,6 @@ import com.indeed.virgil.spring.boot.starter.models.EndpointResponse;
 import com.indeed.virgil.spring.boot.starter.models.ImmutableEndpointResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,6 @@ public class GetQueuesEndpoint implements IVirgilEndpoint {
 
     private final VirgilPropertyConfig virgilPropertyConfig;
 
-    @Autowired
     public GetQueuesEndpoint(
         final VirgilPropertyConfig virgilPropertyConfig
     ) {
@@ -32,7 +30,6 @@ public class GetQueuesEndpoint implements IVirgilEndpoint {
 
     @ReadOperation
     public EndpointResponse<Serializable> index() {
-
         final List<String> list = virgilPropertyConfig.getQueueNames();
 
         return ImmutableEndpointResponse.builder()

@@ -1,9 +1,6 @@
 package com.indeed.virgil.example.models;
 
-public class CustomMessage {
-    private final long id;
-    private final String content;
-
+public record CustomMessage(long id, String content) {
     public CustomMessage(
         final long id,
         final String content
