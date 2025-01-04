@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class RabbitMqConfig {
     public static final String TOPIC_EXCHANGE_NAME = "virgil-exchange";
     public static final String ROUTING_KEY = "test.#";

@@ -14,7 +14,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class TestMessageConverterService {
+class TestMessageConverterService {
 
     @Mock
     private IMessageConverter messageConverter;
@@ -37,7 +37,6 @@ public class TestMessageConverterService {
                 .setMessageId("")
                 .build();
             final Message msg = new Message(bodyBytes, msgProps);
-
 
             //Act
             messageConverterService.mapMessage(msg);

@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked") //Uncheck warnings do not benefit tests
-public class TestRabbitMqConnectionService {
+class TestRabbitMqConnectionService {
 
     @Mock
     private VirgilPropertyConfig mockVirgilPropertyConfig;
@@ -37,7 +37,7 @@ public class TestRabbitMqConnectionService {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         rabbitMqConnectionService = new RabbitMqConnectionService(mockVirgilPropertyConfig);
     }
@@ -241,7 +241,7 @@ public class TestRabbitMqConnectionService {
             //Assert
             final List<Address> actualAddresses = (List<Address>) ReflectionTestUtils.getField(result, "addresses");
 
-            assertThat(actualAddresses).containsAll(expectedAddresses);
+            assertThat(actualAddresses).containsExactlyElementsOf(expectedAddresses);
         }
 
         @Test
@@ -280,7 +280,7 @@ public class TestRabbitMqConnectionService {
             return (AbstractConnectionFactory) method.invoke(instance, binderName);
 
         } catch (final Exception ex) {
-            fail("getConnectionFactory failed. [Message: %s]", ex.getMessage());
+            fail("getConnectionFactory failed - " + ex.getMessage());
         }
 
         return null;

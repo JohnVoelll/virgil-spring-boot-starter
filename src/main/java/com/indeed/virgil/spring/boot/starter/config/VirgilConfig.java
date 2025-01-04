@@ -6,7 +6,6 @@ import com.indeed.virgil.spring.boot.starter.services.MessageConverterService;
 import com.indeed.virgil.spring.boot.starter.services.MessageOperator;
 import com.indeed.virgil.spring.boot.starter.services.RabbitMqConnectionService;
 import com.indeed.virgil.spring.boot.starter.util.VirgilMessageUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +15,11 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(VirgilPropertyConfig.class)
 class VirgilConfig {
 
-    @Autowired
-    private VirgilPropertyConfig virgilPropertyConfig;
+    private final VirgilPropertyConfig virgilPropertyConfig;
+
+    VirgilConfig(VirgilPropertyConfig virgilPropertyConfig) {
+        this.virgilPropertyConfig = virgilPropertyConfig;
+    }
 
     @Bean
     RabbitMqConnectionService rabbitMqConnectionService() {

@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
+import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -12,22 +12,19 @@ import org.springframework.validation.annotation.Validated;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @Component
-@ConstructorBinding
 @ConfigurationProperties(prefix = "virgil")
 @Validated
 public class VirgilPropertyConfig {
     private static final Logger LOG = LoggerFactory.getLogger(VirgilPropertyConfig.class);
 
-    private Map<String, QueueProperties> queues;
+    private final Map<String, QueueProperties> queues;
 
-    private Map<String, BinderProperties> binders;
+    private final Map<String, BinderProperties> binders;
 
+    @ConstructorBinding
     public VirgilPropertyConfig(
         final Map<String, QueueProperties> queues,
         final Map<String, BinderProperties> binders
@@ -81,22 +78,16 @@ public class VirgilPropertyConfig {
         return new ArrayList<>(getQueues().keySet());
     }
 
-    public static class QueueProperties {
-
+    public static final class QueueProperties {
         private String readName;
-
         private String readBinderName;
-
         private BinderProperties readBinderProperties;
-
         private String republishName;
-
         private String republishBindingRoutingKey = "#";
-
         private String republishBinderName;
-
         private BinderProperties republishBinderProperties;
 
+        @ConstructorBinding
         public QueueProperties(
             final String readName,
             final String readBinderName,
@@ -152,14 +143,12 @@ public class VirgilPropertyConfig {
         }
     }
 
-    public static class BinderProperties {
+    public static final class BinderProperties {
+        private final String name;
+        private final String type;
+        private final RabbitProperties rabbitProperties;
 
-        private String name;
-
-        private String type;
-
-        private RabbitProperties rabbitProperties;
-
+        @ConstructorBinding
         public BinderProperties(
             final String name,
             final String type,

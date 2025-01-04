@@ -10,8 +10,9 @@ import org.springframework.amqp.core.MessagePropertiesBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 
-public class TestDefaultMessageConverter {
+class TestDefaultMessageConverter {
 
     //copied from MessageConverterService
     private static final String MESSAGE_HEADER_EXCEPTION = "x-exception-message";

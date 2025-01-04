@@ -8,6 +8,7 @@ import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import java.util.HashMap;
@@ -24,16 +25,16 @@ public class RabbitMqConnectionService {
 
     private final VirgilPropertyConfig virgilPropertyConfig;
 
-    private final ThreadLocal<Map<String, AbstractConnectionFactory>> cachingConnectionFactoryLookup = new ThreadLocal<>();
-    private final ThreadLocal<Map<String, AmqpAdmin>> amqpAdminLookup = new ThreadLocal<>();
-    private final ThreadLocal<Map<String, RabbitTemplate>> rabbitTemplateLookup = new ThreadLocal<>();
+    private final ThreadLocal<Map<String, AbstractConnectionFactory>> cachingConnectionFactoryLookup = ThreadLocal.withInitial(HashMap::new);
+    private final ThreadLocal<Map<String, AmqpAdmin>> amqpAdminLookup = ThreadLocal.withInitial(HashMap::new);
+    private final ThreadLocal<Map<String, RabbitTemplate>> rabbitTemplateLookup = ThreadLocal.withInitial(HashMap::new);
 
     /**
      *
      * @param virgilPropertyConfig Virgil Properties
      */
     public RabbitMqConnectionService(
-        final VirgilPropertyConfig virgilPropertyConfig
+        @NonNull final VirgilPropertyConfig virgilPropertyConfig
     ) {
         this.virgilPropertyConfig = virgilPropertyConfig;
     }
@@ -43,7 +44,7 @@ public class RabbitMqConnectionService {
      * @param queueName Queue Property Key, this is not the actual name of the queue
      * @return BindingKey
      */
-    public String getReadBindingKey(final String queueName) {
+    public String getReadBindingKey(@NonNull final String queueName) {
         final QueueProperties queueProperties = virgilPropertyConfig.getQueueProperties(queueName);
         return queueProperties.getRepublishBindingRoutingKey();
     }
@@ -53,7 +54,7 @@ public class RabbitMqConnectionService {
      * @param queueName Queue Property Key, this is not the actual name of the queue
      * @return RabbitTemplate
      */
-    public RabbitTemplate getReadRabbitTemplate(final String queueName) {
+    public RabbitTemplate getReadRabbitTemplate(@NonNull final String queueName) {
         final QueueProperties queueProperties = virgilPropertyConfig.getQueueProperties(queueName);
         return getRabbitTemplate(queueProperties.getReadBinderName());
     }
@@ -63,7 +64,7 @@ public class RabbitMqConnectionService {
      * @param queueName Queue Property Key, this is not the actual name of the queue
      * @return
      */
-    public AmqpAdmin getReadAmqpAdmin(final String queueName) {
+    public AmqpAdmin getReadAmqpAdmin(@NonNull final String queueName) {
         final QueueProperties queueProperties = virgilPropertyConfig.getQueueProperties(queueName);
         return getAmqpAdmin(queueProperties.getReadBinderName());
     }
@@ -72,9 +73,8 @@ public class RabbitMqConnectionService {
      *
      * @param queueName Queue Property Key, this is not the actual name of the queue
      */
-    public void destroyReadConnection(final String queueName) {
+    public void destroyReadConnection(@NonNull final String queueName) {
         final QueueProperties queueProperties = virgilPropertyConfig.getQueueProperties(queueName);
-
         destroyConnectionsByName(queueProperties.getReadBinderName());
     }
 
@@ -83,7 +83,7 @@ public class RabbitMqConnectionService {
      * @param binderName Name of the RabbitMq Exchange
      * @return
      */
-    public AmqpAdmin getAmqpAdmin(final String binderName) {
+    public AmqpAdmin getAmqpAdmin(@NonNull final String binderName) {
         AmqpAdmin amqpAdmin = getCachedAmqpAdmin(binderName);
         if (amqpAdmin != null) {
             return amqpAdmin;
@@ -95,7 +95,7 @@ public class RabbitMqConnectionService {
         return amqpAdmin;
     }
 
-    public RabbitTemplate getRabbitTemplate(final String binderName) {
+    public RabbitTemplate getRabbitTemplate(@NonNull final String binderName) {
         RabbitTemplate rabbitTemplate = getCachedRabbitTemplate(binderName);
         if (rabbitTemplate != null) {
             return rabbitTemplate;
@@ -107,7 +107,7 @@ public class RabbitMqConnectionService {
         return rabbitTemplate;
     }
 
-    private AbstractConnectionFactory getConnectionFactory(final String binderName) {
+    private AbstractConnectionFactory getConnectionFactory(@NonNull final String binderName) {
         AbstractConnectionFactory cachedAbstractConnectionFactory = getCachedConnectionFactory(binderName);
         if (cachedAbstractConnectionFactory != null) {
             return cachedAbstractConnectionFactory;
@@ -139,7 +139,7 @@ public class RabbitMqConnectionService {
      *
      * @param binderName Name of the RabbitMq Exchange
      */
-    public void destroyConnectionsByName(final String binderName) {
+    public void destroyConnectionsByName(@NonNull final String binderName) {
         //flush cached amqpAdmin and rabbitTemplate instances
         if (amqpAdminLookup.get() != null) {
             amqpAdminLookup.get().remove(binderName);
@@ -162,55 +162,28 @@ public class RabbitMqConnectionService {
 
     @Nullable
     private AmqpAdmin getCachedAmqpAdmin(final String binderName) {
-        Map<String, AmqpAdmin> lookup = amqpAdminLookup.get();
-        if (lookup == null) {
-            amqpAdminLookup.set(new HashMap<>());
-            lookup = amqpAdminLookup.get();
-        }
-
-        return lookup.getOrDefault(binderName, null);
+        return amqpAdminLookup.get().getOrDefault(binderName, null);
     }
 
     private void updateCachedAmqpAdmin(final String binderName, final AmqpAdmin amqpAdmin) {
-        if (amqpAdminLookup.get() == null) {
-            amqpAdminLookup.set(new HashMap<>());
-        }
         amqpAdminLookup.get().put(binderName, amqpAdmin);
     }
 
     @Nullable
     private RabbitTemplate getCachedRabbitTemplate(final String binderName) {
-        Map<String, RabbitTemplate> lookup = rabbitTemplateLookup.get();
-        if (lookup == null) {
-            rabbitTemplateLookup.set(new HashMap<>());
-            lookup = rabbitTemplateLookup.get();
-        }
-
-        return lookup.getOrDefault(binderName, null);
+        return rabbitTemplateLookup.get().getOrDefault(binderName, null);
     }
 
     private void updateCachedRabbitTemplate(final String binderName, final RabbitTemplate rabbitTemplate) {
-        if (rabbitTemplateLookup.get() == null) {
-            rabbitTemplateLookup.set(new HashMap<>());
-        }
         rabbitTemplateLookup.get().put(binderName, rabbitTemplate);
     }
 
     @Nullable
     private AbstractConnectionFactory getCachedConnectionFactory(final String binderName) {
-        Map<String, AbstractConnectionFactory> lookup = cachingConnectionFactoryLookup.get();
-        if (lookup == null) {
-            cachingConnectionFactoryLookup.set(new HashMap<>());
-            lookup = cachingConnectionFactoryLookup.get();
-        }
-
-        return lookup.getOrDefault(binderName, null);
+        return cachingConnectionFactoryLookup.get().getOrDefault(binderName, null);
     }
 
     private void updateCachedConnectionFactory(final String binderName, final AbstractConnectionFactory abstractConnectionFactory) {
-        if (cachingConnectionFactoryLookup.get() == null) {
-            cachingConnectionFactoryLookup.set(new HashMap<>());
-        }
         cachingConnectionFactoryLookup.get().put(binderName, abstractConnectionFactory);
     }
 }

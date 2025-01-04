@@ -2,7 +2,7 @@ package com.indeed.virgil.spring.boot.starter.endpoints;
 
 import com.indeed.virgil.spring.boot.starter.services.MessageOperator;
 import com.indeed.virgil.spring.boot.starter.util.EndpointConstants;
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.indeed.virgil.spring.boot.starter.util.EndpointConstants.ENDPOINT_DEFAULT_PATH_MAPPING;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 public class TestGetQueueSizeEndpoint {
@@ -26,12 +27,11 @@ public class TestGetQueueSizeEndpoint {
 
     @Test
     void shouldImplementIVirgilEndpoint() {
-
         //Act
         final Class<?> c = GetQueueSizeEndpoint.class;
 
         //Assert
-        Assertions.assertTrue(IVirgilEndpoint.class.isAssignableFrom(c));
+        assertThat(IVirgilEndpoint.class.isAssignableFrom(c)).isTrue();
     }
 
     @Test
@@ -42,7 +42,7 @@ public class TestGetQueueSizeEndpoint {
         final String result = getQueueSizeEndpoint.getEndpointId();
 
         //Assert
-        Assertions.assertEquals(EndpointConstants.GET_QUEUE_SIZE_ENDPOINT_ID, result);
+        assertThat(result).isEqualTo(EndpointConstants.GET_QUEUE_SIZE_ENDPOINT_ID);
     }
 
     @Test
@@ -53,6 +53,6 @@ public class TestGetQueueSizeEndpoint {
         final String result = getQueueSizeEndpoint.getEndpointPath();
 
         //Assert
-        Assertions.assertEquals(ENDPOINT_DEFAULT_PATH_MAPPING + EndpointConstants.GET_QUEUE_SIZE_ENDPOINT_ID, result);
+        assertThat(result).isEqualTo(ENDPOINT_DEFAULT_PATH_MAPPING + EndpointConstants.GET_QUEUE_SIZE_ENDPOINT_ID);
     }
 }

@@ -6,9 +6,7 @@ import com.indeed.virgil.spring.boot.starter.models.ImmutableEndpointResponse;
 import com.indeed.virgil.spring.boot.starter.services.MessageOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
-import org.springframework.boot.actuate.endpoint.annotation.Selector;
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +20,11 @@ import static com.indeed.virgil.spring.boot.starter.util.EndpointConstants.ENDPO
  */
 @Component
 @Endpoint(id = DROP_MESSAGE_ENDPOINT_ID)
-public class DropMessageEndpoint implements IVirgilEndpoint {
+public final class DropMessageEndpoint implements IVirgilEndpoint {
     private static final Logger LOG = LoggerFactory.getLogger(DropMessageEndpoint.class);
-
 
     private final MessageOperator messageOperator;
 
-    @Autowired
     public DropMessageEndpoint(final MessageOperator messageOperator) {
         this.messageOperator = messageOperator;
     }

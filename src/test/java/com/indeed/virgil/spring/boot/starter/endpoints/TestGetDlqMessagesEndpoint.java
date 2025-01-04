@@ -39,7 +39,6 @@ public class TestGetDlqMessagesEndpoint {
 
     @Test
     void shouldImplementIVirgilEndpoint() {
-
         //Act
         final Class<?> c = GetDlqMessagesEndpoint.class;
 
